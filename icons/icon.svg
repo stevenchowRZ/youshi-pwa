@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <rect width="512" height="512" rx="112" fill="#090909"/>
+  <circle cx="256" cy="256" r="184" fill="none" stroke="#c89a60" stroke-width="5"/>
+  <circle cx="256" cy="256" r="164" fill="none" stroke="#c89a60" stroke-opacity=".28" stroke-width="2"/>
+  <text x="256" y="324" text-anchor="middle" fill="#f2ede4" font-family="Noto Serif SC,Songti SC,serif" font-size="218" font-weight="600">酉</text>
+  <path d="M204 376h104" stroke="#c89a60" stroke-width="5" stroke-linecap="round"/>
+</svg>

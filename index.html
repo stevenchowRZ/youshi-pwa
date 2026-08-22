@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
+  <meta name="theme-color" content="#15120f">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="酉时">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="description" content="酉时——你的私人鸡尾酒配方、家庭酒柜与原创配方手册">
+  <title>酉时 · 鸡尾酒配方</title>
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="apple-touch-icon" href="icons/icon-180.png">
+  <link rel="icon" href="icons/icon-192.png">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="expanded.css">
+  <link rel="stylesheet" href="features.css">
+  <link rel="stylesheet" href="navigation.css">
+  <link rel="stylesheet" href="theme.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="#top" aria-label="回到首页"><span class="brand-mark">酉</span><span>酉时<small>COCKTAIL ATLAS</small></span></a>
+    <nav class="header-nav"><a href="#recipes">经典配方</a><a href="#pantry">我的酒柜</a><a href="#custom">我的创作</a></nav>
+    <button id="favoriteToggle" class="icon-button" aria-pressed="false"><span>♡</span> 收藏</button>
+  </header>
+  <main id="top">
+    <section class="hero">
+      <div class="eyebrow"><i></i> 私人调酒手册</div>
+      <h1>今晚，喝点<br><em>什么？</em></h1>
+      <p>从清爽的第一口，到深邃的最后一杯。选一种心情，在家复刻经典。</p>
+      <a class="discover" href="#recipes">探索配方 <span>↓</span></a>
+      <div class="hero-art" aria-hidden="true"><span>24<br><small>经典酒款</small></span></div>
+    </section>
+    <section class="catalog" id="recipes">
+      <div class="section-title"><div><span>THE COLLECTION</span><h2>经典配方</h2></div><p id="resultCount">24 款酒</p></div>
+      <div class="tools">
+        <label class="search"><span>⌕</span><input id="search" type="search" placeholder="搜索酒名、配料或口感" autocomplete="off"></label>
+        <div id="filters" class="filters" role="group" aria-label="配方分类"></div>
+      </div>
+      <div id="recipeGrid" class="recipe-grid"></div>
+      <div id="empty" class="empty" hidden><b>没有找到这杯酒</b><p>换个关键词或分类试试。</p></div>
+    </section>
+    <section class="feature-page pantry-page" id="pantry">
+      <div class="feature-heading"><div><span>MY HOME BAR</span><h2>我的酒柜</h2><p>告诉我家里有什么，我来找出今晚能做的酒。</p></div><b id="pantryTotal">0 种材料</b></div>
+      <div class="pantry-editor">
+        <label for="pantryInput">添加基酒、果汁或其他配料</label>
+        <div class="pantry-entry"><input id="pantryInput" placeholder="例如：金酒、汤力水、青柠" autocomplete="off"><button id="addPantry">添加材料</button></div>
+        <p class="field-help">可一次输入多个，用逗号、顿号或回车分隔。冰块、水、盐等基础材料默认不计。</p>
+        <div id="pantryChips" class="pantry-chips"></div>
+        <div class="quick-add"><span>快速添加</span><div id="quickIngredients"></div></div>
+      </div>
+      <div class="match-heading"><h3>你能制作的鸡尾酒</h3><label><input id="showNear" type="checkbox"> 显示只差 1 种材料的酒</label></div>
+      <div id="matchGrid" class="match-grid"></div>
+      <div id="noMatches" class="empty"><b>酒柜还是空的</b><p>先添加几种材料，我会立即为你匹配。</p></div>
+    </section>
+    <section class="feature-page custom-page" id="custom">
+      <div class="feature-heading"><div><span>MY CREATIONS</span><h2>我的创作</h2><p>把偶然调出的好味道，变成你的私人配方。</p></div><button id="newCustom" class="gold-button">＋ 新建配方</button></div>
+      <div id="customGrid" class="custom-grid"></div>
+      <div id="noCustom" class="empty"><b>还没有自创配方</b><p>从家里的材料开始，发明属于你的第一杯。</p><button class="text-button" id="emptyNewCustom">新建第一份配方 →</button></div>
+    </section>
+  </main>
+  <dialog id="detail" class="detail">
+    <div class="detail-shell">
+      <button class="close" aria-label="关闭详情">×</button>
+      <div id="detailPhoto" class="detail-photo"><div class="photo-shade"></div><div class="photo-title"><span id="detailIndex"></span><h2 id="detailName"></h2><p id="detailEn"></p></div></div>
+      <div class="detail-content">
+        <div id="detailTags" class="detail-tags"></div>
+        <p id="detailIntro" class="detail-intro"></p>
+        <div class="detail-grid">
+          <section><div class="subhead"><h3>配料</h3><span>1 杯份</span></div><ul id="ingredients" class="ingredients"></ul></section>
+          <section><div class="subhead"><h3>制作步骤</h3><span id="method"></span></div><ol id="steps" class="steps"></ol></section>
+        </div>
+        <aside class="tip"><span>✦</span><div><b>调酒师提示</b><p id="tip"></p></div></aside>
+        <button id="detailFavorite" class="save-button">♡ 收藏这份配方</button>
+      </div>
+    </div>
+  </dialog>
+  <dialog id="customEditor" class="custom-editor">
+    <form id="customForm" method="dialog">
+      <div class="editor-head"><div><span>MY RECIPE</span><h2 id="editorTitle">新建配方</h2></div><button type="button" id="closeEditor" aria-label="关闭">×</button></div>
+      <label>配方名称<input id="customName" required maxlength="30" placeholder="给这杯酒起个名字"></label>
+      <div class="form-row"><label>英文名或副标题<input id="customEn" maxlength="40" placeholder="可选"></label><label>口感描述<input id="customTaste" maxlength="40" placeholder="例如：清爽、酸甜"></label></div>
+      <label>配料与用量<textarea id="customIngredients" required rows="5" placeholder="每行一种，例如：&#10;金酒 | 45 ml&#10;柠檬汁 | 20 ml&#10;糖浆 | 10 ml"></textarea></label>
+      <label>制作步骤<textarea id="customSteps" required rows="5" placeholder="每行一个步骤"></textarea></label>
+      <label>灵感与备注<textarea id="customNote" rows="3" placeholder="记录灵感来源、杯型或装饰"></textarea></label>
+      <div class="editor-actions"><button type="button" id="cancelEditor">取消</button><button type="submit" class="gold-button">保存配方</button></div>
+    </form>
+  </dialog>
+  <nav class="bottom-nav" aria-label="快捷导航"><a href="#top"><span>⌂</span>首页</a><a href="#pantry"><span>▤</span>酒柜</a><a href="#custom"><span>✎</span>创作</a><button id="randomBtn"><span>✦</span>随机</button></nav>
+  <script src="app.js"></script>
+  <script src="features.js"></script>
+</body>
+</html>
