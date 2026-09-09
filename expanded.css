@@ -1,1 +1,1 @@
-.sprite,.detail-photo{background-image:var(--img)}
+.sprite,.detail-photo{background-image:var(--img);background-size:var(--sprite-size,400% 200%);background-position:var(--sprite-position,0 0)}

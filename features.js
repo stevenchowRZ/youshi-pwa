@@ -7,6 +7,27 @@ const available=(need,stock)=>{const n=clean(need);return basic.has(need)||basic
 const savePantry=()=>localStorage.setItem('cupAtlasPantry',JSON.stringify([...pantry]));
 function addPantryValues(value){value.split(/[，,、;；\n]+/).map(clean).filter(Boolean).forEach(x=>pantry.add(x));savePantry();renderPantry()}
 function renderPantry(){const items=[...pantry];$('#pantryTotal').textContent=`${items.length} 种材料`;$('#pantryChips').innerHTML=items.length?items.map(x=>`<button class="pantry-chip" data-remove="${esc(x)}">${esc(x)}<span>×</span></button>`).join(''):'<span class="field-help">尚未添加材料</span>';const common=['金酒','白朗姆','伏特加','龙舌兰','波本威士忌','甜味美思','橙味利口酒','青柠汁','柠檬汁','糖浆','汤力水','苏打水','姜汁啤酒','橙汁','可乐'];$('#quickIngredients').innerHTML=common.filter(x=>!pantry.has(x)).map(x=>`<button data-quick="${x}">＋ ${x}</button>`).join('');renderMatches()}
+const categoryOrder=['基酒','利口酒与葡萄酒','果汁与水果','气泡与软饮','糖浆与甜味','乳制与调味','基础与装饰'];
+function categoryForIngredient(name){
+  const n=clean(name);
+  if(['金酒','白朗姆','深色朗姆','伏特加','柑橘伏特加','龙舌兰','波本威士忌','黑麦威士忌','威士忌','苏格兰威士忌'].includes(n))return'基酒';
+  if(/利口酒|金巴利|阿佩罗|味美思|苦精|起泡酒/.test(n))return'利口酒与葡萄酒';
+  if(/水$|汽水|可乐|汤力水|苏打水|姜汁啤酒/.test(n))return'气泡与软饮';
+  if(/汁|果泥|青柠|柠檬|橙片|橙皮|西柚|菠萝|蔓越莓/.test(n))return'果汁与水果';
+  if(/糖浆|蜂蜜|红石榴/.test(n))return'糖浆与甜味';
+  if(/奶油|椰浆|蛋清|伍斯特|辣椒|胡椒/.test(n))return'乳制与调味';
+  return'基础与装饰';
+}
+function allRecipeIngredients(){return[...new Set(recipes.flatMap(r=>r.ingredients.map(([name])=>clean(name))).filter(Boolean))].sort((a,b)=>a.localeCompare(b,'zh-CN'))}
+renderPantry=function renderCategorizedPantry(){
+  const items=[...pantry];
+  $('#pantryTotal').textContent=`${items.length} 种材料`;
+  $('#pantryChips').innerHTML=items.length?items.map(x=>`<button class="pantry-chip" data-remove="${esc(x)}">${esc(x)}<span>×</span></button>`).join(''):'<span class="field-help">尚未添加材料</span>';
+  const remaining=allRecipeIngredients().filter(x=>!pantry.has(x));
+  const groups=categoryOrder.map(category=>[category,remaining.filter(x=>categoryForIngredient(x)===category)]).filter(([,names])=>names.length);
+  $('#quickIngredients').innerHTML=groups.length?groups.map(([category,names])=>`<section class="ingredient-category"><h4>${category}<span>${names.length}</span></h4><div class="ingredient-category-items">${names.map(x=>`<button data-quick="${esc(x)}">＋ ${esc(x)}</button>`).join('')}</div></section>`).join(''):'<p class="quick-add-empty">全部配方材料都已加入酒柜。</p>';
+  renderMatches();
+};
 function neededFor(r){return r.ingredients.map(x=>x[0]).filter(x=>!basic.has(x)&&!basic.has(clean(x)))}
 function renderMatches(){const stock=[...pantry],showNear=$('#showNear').checked;const matches=recipes.map(r=>{const missing=neededFor(r).filter(x=>!available(x,stock));return{r,missing}}).filter(x=>x.missing.length===0||(showNear&&x.missing.length===1));$('#matchGrid').innerHTML=matches.map(({r,missing})=>`<article class="match-card ${missing.length?'near':'ready'}"><span>${esc(r.en)}</span><h4>${esc(r.name)}</h4><p>${esc(r.intro)}</p><b class="status">${missing.length?`还差：${esc(missing[0])}`:'✓ 现有材料可以制作'}</b><button data-open-match="${esc(r.name)}">查看完整配方 →</button></article>`).join('');$('#noMatches').hidden=!!matches.length;if(!stock.length){$('#noMatches').querySelector('b').textContent='酒柜还是空的';$('#noMatches').querySelector('p').textContent='先添加几种材料，我会立即为你匹配。'}else if(!matches.length){$('#noMatches').querySelector('b').textContent='暂时没有匹配';$('#noMatches').querySelector('p').textContent='再添加一些配料，或打开“只差 1 种材料”。'}}
 $('#addPantry').onclick=()=>{addPantryValues($('#pantryInput').value);$('#pantryInput').value=''};$('#pantryInput').onkeydown=e=>{if(e.key==='Enter'){e.preventDefault();$('#addPantry').click()}};$('#pantryChips').onclick=e=>{const b=e.target.closest('[data-remove]');if(b){pantry.delete(b.dataset.remove);savePantry();renderPantry()}};$('#quickIngredients').onclick=e=>{const b=e.target.closest('[data-quick]');if(b)addPantryValues(b.dataset.quick)};$('#showNear').onchange=renderMatches;$('#matchGrid').onclick=e=>{const b=e.target.closest('[data-open-match]');if(b)openDetail(b.dataset.openMatch)};

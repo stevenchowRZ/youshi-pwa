@@ -1,0 +1,14 @@
+/* Hero uses one square cell from the 4×2 sprite without changing its aspect ratio. */
+.hero{background-image:linear-gradient(90deg,#13100dcc 0 47%,#13100d22),url('assets/cocktails-grid.png');background-size:cover,400% auto;background-position:center,left top;background-repeat:no-repeat}
+.detail-shell{will-change:transform}.swipe-hint{display:none}
+@media(orientation:portrait){.hero{background-size:cover,auto 200%;background-position:center,left top}}
+@media(max-width:600px){
+  .hero{background-image:linear-gradient(90deg,#0b0907d9 0 35%,#0b09075c),url('assets/cocktails-grid.png');background-size:cover,auto 200%;background-position:center,left top}
+  .close{position:fixed;top:calc(env(safe-area-inset-top) + 14px);right:14px;width:50px;height:50px;touch-action:manipulation}
+  .swipe-hint{display:flex;position:absolute;z-index:4;top:calc(env(safe-area-inset-top) + 26px);left:18px;align-items:center;gap:7px;color:#f2ede4b3;font-size:12px;letter-spacing:.08em;pointer-events:none}
+  .swipe-hint span{font-size:22px;color:var(--gold)}
+  .detail-shell{touch-action:pan-y}
+}
+@media(min-width:601px) and (orientation:portrait){.hero{background-size:cover,auto 200%;background-position:center,left top}}
+@media(min-width:601px) and (orientation:landscape){.hero{background-size:cover,400% auto;background-position:center,left top}}
+@media(prefers-reduced-motion:reduce){.detail-shell{transition:none!important}}

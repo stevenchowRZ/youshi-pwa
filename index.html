@@ -18,6 +18,9 @@
   <link rel="stylesheet" href="features.css">
   <link rel="stylesheet" href="navigation.css">
   <link rel="stylesheet" href="theme.css">
+  <link rel="stylesheet" href="responsive-fixes.css">
+  <link rel="stylesheet" href="pantry-categories.css">
+  <link rel="stylesheet" href="discovery.css">
 </head>
 <body>
   <header class="site-header">
@@ -31,14 +34,18 @@
       <h1>今晚，喝点<br><em>什么？</em></h1>
       <p>从清爽的第一口，到深邃的最后一杯。选一种心情，在家复刻经典。</p>
       <a class="discover" href="#recipes">探索配方 <span>↓</span></a>
-      <div class="hero-art" aria-hidden="true"><span>24<br><small>经典酒款</small></span></div>
+      <div class="hero-art" aria-hidden="true"><span>36<br><small>经典酒款</small></span></div>
     </section>
     <section class="catalog" id="recipes">
-      <div class="section-title"><div><span>THE COLLECTION</span><h2>经典配方</h2></div><p id="resultCount">24 款酒</p></div>
+      <div class="section-title"><div><span>THE COLLECTION</span><h2>经典配方</h2></div><p id="resultCount">36 款酒</p></div>
       <div class="tools">
         <label class="search"><span>⌕</span><input id="search" type="search" placeholder="搜索酒名、配料或口感" autocomplete="off"></label>
-        <div id="filters" class="filters" role="group" aria-label="配方分类"></div>
       </div>
+      <section class="discovery-panel" aria-label="按口味和难度筛选">
+        <div class="filter-row"><div class="filter-label"><span>01</span><b>想喝什么味道</b></div><div id="tasteFilters" class="smart-filters"></div></div>
+        <div class="filter-row"><div class="filter-label"><span>02</span><b>今天想怎么做</b></div><div id="easeFilters" class="smart-filters"></div></div>
+        <details class="more-filters"><summary>更多筛选 <span>＋</span></summary><div class="more-filter-content"><div><b>基酒类型</b><div id="filters" class="filters" role="group" aria-label="基酒类型"></div></div><div><b>酒精强度</b><div id="strengthFilters" class="filters" role="group" aria-label="酒精强度"></div></div></div></details>
+      </section>
       <div id="recipeGrid" class="recipe-grid"></div>
       <div id="empty" class="empty" hidden><b>没有找到这杯酒</b><p>换个关键词或分类试试。</p></div>
     </section>
@@ -49,7 +56,7 @@
         <div class="pantry-entry"><input id="pantryInput" placeholder="例如：金酒、汤力水、青柠" autocomplete="off"><button id="addPantry">添加材料</button></div>
         <p class="field-help">可一次输入多个，用逗号、顿号或回车分隔。冰块、水、盐等基础材料默认不计。</p>
         <div id="pantryChips" class="pantry-chips"></div>
-        <div class="quick-add"><span>快速添加</span><div id="quickIngredients"></div></div>
+        <div class="quick-add"><div class="quick-add-title"><span>快速添加</span><small>包含全部配方材料</small></div><div id="quickIngredients"></div></div>
       </div>
       <div class="match-heading"><h3>你能制作的鸡尾酒</h3><label><input id="showNear" type="checkbox"> 显示只差 1 种材料的酒</label></div>
       <div id="matchGrid" class="match-grid"></div>
@@ -63,6 +70,7 @@
   </main>
   <dialog id="detail" class="detail">
     <div class="detail-shell">
+      <div class="swipe-hint" aria-hidden="true"><span>→</span> 右滑返回首页</div>
       <button class="close" aria-label="关闭详情">×</button>
       <div id="detailPhoto" class="detail-photo"><div class="photo-shade"></div><div class="photo-title"><span id="detailIndex"></span><h2 id="detailName"></h2><p id="detailEn"></p></div></div>
       <div class="detail-content">
@@ -91,5 +99,7 @@
   <nav class="bottom-nav" aria-label="快捷导航"><a href="#top"><span>⌂</span>首页</a><a href="#pantry"><span>▤</span>酒柜</a><a href="#custom"><span>✎</span>创作</a><button id="randomBtn"><span>✦</span>随机</button></nav>
   <script src="app.js"></script>
   <script src="features.js"></script>
+  <script src="gestures.js"></script>
+  <script src="discovery.js"></script>
 </body>
 </html>
